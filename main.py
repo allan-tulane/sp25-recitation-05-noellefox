@@ -1,5 +1,7 @@
-import random, time
+import random
+import time
 import tabulate
+import matplotlib.pyplot as plt
 
 def ssort(L):
     ### selection sort
@@ -10,11 +12,20 @@ def ssort(L):
         print('selecting minimum %s' % L[m])       
         L[0], L[m] = L[m], L[0]
         print('recursively sorting L=%s\n' % L[1:])
-        return [L[0]] + selection_sort(L[1:])
+        return [L[0]] + ssort(L[1:])
         
 def qsort(a, pivot_fn):
     ## TO DO
-    pass
+    if(len(a) <= 1):
+        return a
+   
+    p = pivot_fn(a)
+    left = [x for x in a if x < p]
+    right = [x for x in a if x > p]
+    middle = [x for x in a if x == p]
+    return qsort(left, pivot_fn) + middle + qsort(right, pivot_fn)
+    
+
     
 def time_search(sort_fn, mylist):
     """
@@ -50,9 +61,9 @@ def compare_sort(sizes=[100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 10
       for each method to run on each value of n
     """
     ### TODO - sorting algorithms for comparison
-    qsort_fixed_pivot = # 
-    qsort_random_pivot = #
-    tim_sort = #
+    qsort_fixed_pivot = lambda L: qsort(L, lambda x: x[0])  # First element as pivot
+    qsort_random_pivot = lambda L: qsort(L, lambda x: random.choice(x))  # Random pivot
+    tim_sort = sorted
     result = []
     for size in sizes:
         # create list in ascending order
@@ -77,5 +88,23 @@ def print_results(results):
 def test_print():
     print_results(compare_sort())
 
+
+
+def plot_results(results, title="Pivot Timing Results"):
+    sizes = [row[0] for row in results]
+    fixed_times = [row[1] for row in results]
+    random_times = [row[2] for row in results]
+
+    plt.plot(sizes, fixed_times, label='qsort-fixed-pivot')
+    plt.plot(sizes, random_times, label='qsort-random-pivot')
+    plt.xlabel("List size (n)")
+    plt.ylabel("Time (ms)")
+    plt.title(title)
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
 random.seed()
+results = compare_sort()
 test_print()
+plot_results(results)
