@@ -69,7 +69,7 @@ def compare_sort(sizes=[100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 10
       for each method to run on each value of n
     """
     ### TODO - sorting algorithms for comparison
-    qsort_fixed_pivot = lambda L: qsort(L, lambda x: x[0])  # First element as pivot
+    qsort_fixed_pivot = lambda L: qsort(L, lambda x: x[0] if isinstance(x, list) else L[0])  # First element as pivot
     qsort_random_pivot = lambda L: qsort(L, lambda x: random.choice(x))  # Random pivot
     tim_sort = sorted
     result = []
