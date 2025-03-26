@@ -15,14 +15,22 @@ def ssort(L):
         return [L[0]] + ssort(L[1:])
         
 def qsort(a, pivot_fn):
-    ## TO DO
-    if(len(a) <= 1):
+    if len(a) <= 1:
         return a
-   
-    p = pivot_fn(a)
-    left = [x for x in a if x < p]
-    right = [x for x in a if x > p]
-    middle = [x for x in a if x == p]
+    
+    pivot = pivot_fn(a)
+    left = []
+    right = []
+    middle = []
+    
+    for x in a:
+        if x < pivot:
+            left.append(x)
+        elif x > pivot:
+            right.append(x)
+        else:
+            middle.append(x)
+            
     return qsort(left, pivot_fn) + middle + qsort(right, pivot_fn)
     
 
